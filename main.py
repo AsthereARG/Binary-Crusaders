@@ -54,15 +54,23 @@ class VoiceAssistantWindow(QWidget):
         return driver
 
     def send_message(self, query):
-        if "search" in query.lower():
-            self.handle_search(query)
-        elif any(keyword in query.lower() for keyword in ["what time is", "what is the time"]):
+        if any(keyword in query.lower() for keyword in ["what time is", "what is the time"]):
             self.extract_time(query)
-        elif "weather" in query.lower():
-            self.extract_weather(query)
+        elif "music" in query.lower():
+            self.handle_music_request(query)
         else:
             response = get_chatgpt_response(query)
             self.handle_response(response)
+
+    def handle_music_request(self, query):
+        if "music" in query.lower():
+            if "search" in query.lower():
+                song_to_search = self.extract_search_term(query)
+                if song_to_search:
+                    spotify_search_url = f"https://open.spotify.com/search/{song_to_search}"
+                    self.handle_search_task(spotify_search_url)
+            else:
+                self.handle_search_task("https://open.spotify.com/")
 
     def extract_weather(self, query):
         # Directly use the fixed city code
@@ -117,6 +125,20 @@ class VoiceAssistantWindow(QWidget):
             except sr.RequestError as e:
                 print("Request error; {0}".format(e))
 
+    def extract_search_term(self, query):
+        keywords = ["search", "music"]  # Adjust keywords as needed
+        for keyword in keywords:
+            if keyword in query.lower():
+                search_term = query.lower().split(keyword)[-1].strip()
+                return search_term
+
+        return None
+
+    def handle_search_task(self, url):
+        if not self.browser_driver:
+            self.browser_driver = self.launch_browser(url)
+        else:
+            self.browser_driver.get(url)
 
 def get_chatgpt_response(query):
     response = openai.ChatCompletion.create(
