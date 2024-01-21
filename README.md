@@ -8,7 +8,7 @@ Thank you for exploring Zenith - Your Voice-Activated Assistant! This Python-bas
 
 Usage Guidelines:
 
-Launch Zenith.
+Launch Zenith.(Using Command-line)
 Click on the microphone icon to commence voice recognition.
 Speak your query or command, and let Zenith assist you.
 Please note that Zenith is still a work in progress. While we've worked to create a robust and engaging experience, errors are possible. We appreciate your understanding and welcome any feedback as we continue to refine and expand Zenith's capabilities.
