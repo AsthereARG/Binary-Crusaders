@@ -1,5 +1,5 @@
 # Binary-Crusaders
-Randomize(); Hackathon
+Randomize(); Hackathon(Not Functional Currently)
 
 
 Zenith - Your Voice-Activated Assistant
